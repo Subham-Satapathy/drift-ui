@@ -1,8 +1,19 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [showWalletPopup, setShowWalletPopup] = useState(false);
+  const { connected } = useWallet();
+  const router = useRouter();
+  
+  // Redirect to dashboard if wallet is connected
+  useEffect(() => {
+    if (connected) {
+      router.push('/dashboard');
+    }
+  }, [connected, router]);
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center text-center relative">
@@ -57,7 +68,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-center justify-center py-6">
               <div className="bg-[#2A2D3A]/50 p-4 rounded-lg mb-6 max-w-sm">
-                <p className="text-white/80 text-center">Please connect your wallet using the wallet button in the top right corner of the page to manage your accounts.</p>
+                <p className="text-white/80 text-center">Please connect your wallet using the wallet button in the top right corner of the page. You'll be redirected to your dashboard automatically after connecting.</p>
               </div>
             </div>
           </div>
