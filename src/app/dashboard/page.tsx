@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/navigation';
 import { useDriftStore } from '@/store/driftStore';
+import { PublicKey } from '@solana/web3.js';
 import type { SpotPosition, PerpPosition } from '@/store/driftStore';
 
 // Helper functions to check for valid positions
@@ -25,15 +26,28 @@ export default function DashboardPage() {
   const { userAccounts, isLoading, error, fetchUserAccounts, setSelectedAccount } = useDriftStore();
   const [selectedAccountId, setSelectedAccountId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [searchWallet, setSearchWallet] = useState('');
+  const [searchError, setSearchError] = useState('');
   
-  // Fetch user accounts when wallet is connected
+  // Fetch user accounts when wallet is connected or searched
   useEffect(() => {
-    if (publicKey) {
-      fetchUserAccounts(publicKey);
-    } else if (!connected) {
-      router.push('/');
-    }
-  }, [publicKey, connected, fetchUserAccounts, router]);
+    const fetchAccounts = async () => {
+      try {
+        if (searchWallet) {
+          const pubKey = new PublicKey(searchWallet);
+          await fetchUserAccounts(pubKey);
+          setSearchError('');
+        } else if (publicKey) {
+          await fetchUserAccounts(publicKey);
+        } else if (!connected && !searchWallet) {
+          router.push('/');
+        }
+      } catch (err) {
+        setSearchError('Invalid wallet address');
+      }
+    };
+    fetchAccounts();
+  }, [publicKey, connected, fetchUserAccounts, router, searchWallet]);
 
   // Set the first account as selected by default when accounts are loaded
   useEffect(() => {
@@ -46,14 +60,63 @@ export default function DashboardPage() {
   // Get the currently selected account
   const selectedAccount = userAccounts.find(acc => acc.subAccountId === selectedAccountId);
 
-  // Don't render anything while redirecting if not connected
-  if (!connected) {
+  // Don't render anything while redirecting if not connected and no search
+  if (!connected && !searchWallet) {
     return null;
   }
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-16rem)]">
       <div className="space-y-6 animate-fade-in flex-1">
+        {/* Search Bar */}
+        <div className="flex gap-4 items-center">
+          <input
+            type="text"
+            placeholder="Search by wallet address..."
+            value={searchWallet}
+            onChange={(e) => setSearchWallet(e.target.value)}
+            className="flex-1 px-4 py-2 bg-[#1A1B23]/60 border border-[#3A3D4A]/60 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#ff7e5f]"
+          />
+          <button
+            onClick={() => setSearchWallet('')}
+            className="px-4 py-2 bg-[#2A2D3A]/60 text-white/70 rounded-lg hover:bg-[#3A3D4A]/60 transition-all"
+          >
+            Reset
+          </button>
+        </div>
+        
+        {/* Sub Account Selector */}
+        {!isLoading && !error && userAccounts.length > 0 && (
+          <div className="flex gap-4 items-center">
+            <select
+              value={selectedAccountId || ''}
+              onChange={(e) => {
+                const newId = parseInt(e.target.value);
+                setSelectedAccountId(newId);
+                const newAccount = userAccounts.find(acc => acc.subAccountId === newId);
+                if (newAccount) setSelectedAccount(newAccount);
+              }}
+              className="flex-1 px-4 py-2 bg-[#1A1B23]/60 border border-[#3A3D4A]/60 rounded-lg text-white focus:outline-none focus:border-[#ff7e5f] appearance-none cursor-pointer"
+            >
+              {userAccounts.map((account) => (
+                <option key={account.subAccountId} value={account.subAccountId}>
+                  {account.name || `Account #${account.subAccountId}`} - {account.marginMode}
+                </option>
+              ))}
+            </select>
+            <div className="text-white/70">
+              {userAccounts.length} {userAccounts.length === 1 ? 'Account' : 'Accounts'}
+            </div>
+          </div>
+        )}
+        
+        {/* Search Error */}
+        {searchError && (
+          <div className="bg-[#ff5555]/10 border border-[#ff5555]/20 text-[#ff5555] rounded-xl p-4">
+            {searchError}
+          </div>
+        )}
+
         {/* Loading state */}
         {isLoading && (
           <div className="flex justify-center items-center py-12">
@@ -112,7 +175,7 @@ export default function DashboardPage() {
           <div>
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4">
-              {['overview', 'positions', 'orders'].map((tab) => (
+              {['overview', 'positions'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
