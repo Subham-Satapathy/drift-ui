@@ -43,15 +43,6 @@ export default function DashboardPage() {
     }
   }, [userAccounts, selectedAccountId, setSelectedAccount]);
 
-  // Handle account selection change
-  const handleAccountChange = (subAccountId: number) => {
-    setSelectedAccountId(subAccountId);
-    const account = userAccounts.find(acc => acc.subAccountId === subAccountId);
-    if (account) {
-      setSelectedAccount(account);
-    }
-  };
-
   // Get the currently selected account
   const selectedAccount = userAccounts.find(acc => acc.subAccountId === selectedAccountId);
 
@@ -98,7 +89,7 @@ export default function DashboardPage() {
               </div>
               <h3 className="text-xl font-bold mb-2 text-white">No Accounts Found</h3>
               <p className="text-white/70 max-w-md mb-6">
-                You don't have any Drift accounts associated with this wallet yet.
+                You don&apos;t have any Drift accounts associated with this wallet yet.
               </p>
               <button 
                 className="px-5 py-2.5 bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:opacity-90 text-black font-medium rounded-lg transition-all shadow-md"
@@ -350,7 +341,7 @@ export default function DashboardPage() {
                       </div>
                       <h3 className="text-xl font-bold mb-2 text-white">No Open Positions</h3>
                       <p className="text-white/70 max-w-md mb-6">
-                        You don't have any open positions with this account yet.
+                        You don&apos;t have any open positions with this account yet.
                       </p>
                       <button 
                         className="px-5 py-2.5 bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:opacity-90 text-black font-medium rounded-lg transition-all shadow-md"
@@ -391,7 +382,7 @@ export default function DashboardPage() {
                   </div>
                   <h3 className="text-xl font-bold mb-2 text-white">No Open Orders</h3>
                   <p className="text-white/70 max-w-md mb-6">
-                    You don't have any open orders with this account yet.
+                    You don&apos;t have any open orders with this account yet.
                   </p>
                   <button 
                     className="px-5 py-2.5 bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:opacity-90 text-black font-medium rounded-lg transition-all shadow-md"

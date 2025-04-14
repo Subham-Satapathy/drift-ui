@@ -68,7 +68,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-center justify-center py-6">
               <div className="bg-[#2A2D3A]/50 p-4 rounded-lg mb-6 max-w-sm">
-                <p className="text-white/80 text-center">Please connect your wallet using the wallet button in the top right corner of the page. You'll be redirected to your dashboard automatically after connecting.</p>
+                <p className="text-white/80 text-center">Please connect your wallet using the wallet button in the top right corner of the page. You&apos;ll be redirected to your dashboard automatically after connecting.</p>
               </div>
             </div>
           </div>
