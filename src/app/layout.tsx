@@ -20,7 +20,7 @@ export default function RootLayout({
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in relative z-10 flex-1 w-full">
               {children}
             </main>
-            <footer className="py-6 border-t border-[#3A3D4A]/40 relative z-10 mt-auto">
+            <footer className="py-6 relative z-10 mt-auto">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <p className="text-center text-sm text-white/70">
                   Made by subhs with ❤️ © {new Date().getFullYear()}
