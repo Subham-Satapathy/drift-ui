@@ -23,10 +23,10 @@ export const Header = () => {
   }, [connected, publicKey, wallet, setWalletConnected, setWalletAddress, setWalletName]);
   
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/90 border-b border-border py-4">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-sm bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
+        <div className="flex justify-between items-center py-4">
+          <div className="flex items-center space-x-6">
             <div className="w-[80px] h-[40px] sm:w-[120px] sm:h-[60px] relative">
               <Image 
                 src="/logo.png" 
@@ -37,7 +37,9 @@ export const Header = () => {
               />
             </div>
           </div>
-          <WalletMultiButton />
+          <div className="flex items-center space-x-3">
+            <WalletMultiButton />
+          </div>
         </div>
       </div>
     </header>
