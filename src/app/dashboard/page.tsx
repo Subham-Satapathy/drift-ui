@@ -43,6 +43,7 @@ export default function DashboardPage() {
           router.push('/');
         }
       } catch (err) {
+        console.error('Error fetching accounts:', err);
         setSearchError('Invalid wallet address');
       }
     };
