@@ -92,7 +92,5 @@ export const driftService = {
       };
     }
   },
-  
-  // Add more Drift API methods here
-  // Example: getUserAccount, getPositions, etc.
+
 }; 

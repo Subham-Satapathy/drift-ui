@@ -26,7 +26,7 @@ export const useStore = create<StoreState>((set, get) => ({
   walletAddress: null,
   walletName: null,
   connection: null,
-  network: WalletAdapterNetwork.Devnet,
+  network: process.env.NEXT_PUBLIC_NETWORK as WalletAdapterNetwork,
   driftInitialized: false,
   isInitializing: false,
   

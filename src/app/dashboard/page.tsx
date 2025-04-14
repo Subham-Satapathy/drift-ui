@@ -61,7 +61,6 @@ export default function DashboardPage() {
   // Get the currently selected account
   const selectedAccount = userAccounts.find(acc => acc.subAccountId === selectedAccountId);
 
-  // Don't render anything while redirecting if not connected and no search
   if (!connected && !searchWallet) {
     return null;
   }
