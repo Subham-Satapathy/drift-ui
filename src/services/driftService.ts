@@ -4,7 +4,7 @@ interface DriftApiResponse {
   success?: boolean;
   message?: string;
   error?: string;
-  data?: any;
+  data?: unknown;
 }
 
 interface UserAccount {

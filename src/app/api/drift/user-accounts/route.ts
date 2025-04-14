@@ -3,9 +3,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import {
   DriftClient,
   DriftClientConfig,
-  BulkAccountLoader,
   DRIFT_PROGRAM_ID,
-  getUserAccountPublicKey,
   DriftEnv,
   BN,
   convertToNumber,
@@ -140,6 +138,10 @@ function transformUserAccounts(userAccounts: DriftUserAccountInfo[], env: DriftE
   const BASE_PRECISION = new BN(10).pow(new BN(9));
   const QUOTE_PRECISION = new BN(10).pow(new BN(6));
 
+  // Fix the require imports by importing directly
+  const SpotMarketsObj = SpotMarkets;
+  const PerpMarketsObj = PerpMarkets;
+
   return userAccounts.map((userAccount) => {
     return {
       ...userAccount,
@@ -153,7 +155,7 @@ function transformUserAccounts(userAccounts: DriftUserAccountInfo[], env: DriftE
         convertToNumber(new BN(userAccount.settledPerpPnl), BASE_PRECISION) :
         undefined,
       spotPositions: userAccount.spotPositions?.map((spotPosition) => {
-        const market = SpotMarkets[env].find((m: any) => m.marketIndex === spotPosition.marketIndex);
+        const market = SpotMarketsObj[env].find((m) => m.marketIndex === spotPosition.marketIndex);
         return {
           ...spotPosition,
           scaledBalance: spotPosition.scaledBalance !== undefined ?
@@ -167,7 +169,7 @@ function transformUserAccounts(userAccounts: DriftUserAccountInfo[], env: DriftE
         };
       }),
       perpPositions: userAccount.perpPositions?.map((perpPosition) => {
-        const market = PerpMarkets[env].find((m: any) => m.marketIndex === perpPosition.marketIndex);
+        const market = PerpMarketsObj[env].find((m) => m.marketIndex === perpPosition.marketIndex);
         return {
           ...perpPosition,
           baseAssetAmount: perpPosition.baseAssetAmount !== undefined ?

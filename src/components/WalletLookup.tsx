@@ -20,7 +20,7 @@ export default function WalletLookup() {
       // Validate Solana public key
       try {
         new PublicKey(inputValue);
-      } catch (err) {
+      } catch {
         setError('Invalid Solana address format');
         return;
       }

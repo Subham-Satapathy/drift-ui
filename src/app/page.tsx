@@ -3,7 +3,6 @@
 import UserAccounts from '@/components/UserAccounts';
 import { useState } from 'react';
 import WalletLookup from '@/components/WalletLookup';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function Home() {
   const [isLookupOpen, setIsLookupOpen] = useState(false);

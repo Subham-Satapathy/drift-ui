@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Connection, PublicKey } from '@solana/web3.js';
+import { Connection } from '@solana/web3.js';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { Wallet } from '@solana/wallet-adapter-react';
 import { driftService } from '../services/driftService';
@@ -18,7 +18,7 @@ interface StoreState {
   setWalletName: (name: string | null) => void;
   setConnection: (connection: Connection | null) => void;
   setNetwork: (network: WalletAdapterNetwork) => void;
-  initializeDrift: (wallet: Wallet, connection: Connection) => Promise<boolean>;
+  initializeDrift: (wallet: Wallet) => Promise<boolean>;
 }
 
 export const useStore = create<StoreState>((set, get) => ({
@@ -36,7 +36,7 @@ export const useStore = create<StoreState>((set, get) => ({
   setConnection: (connection) => set({ connection }),
   setNetwork: (network) => set({ network }),
   
-  initializeDrift: async (wallet, connection) => {
+  initializeDrift: async (wallet) => {
     if (!wallet.adapter.publicKey) {
       console.error('Wallet public key not available');
       return false;
