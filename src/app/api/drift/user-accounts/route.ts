@@ -105,12 +105,6 @@ export async function GET(request: NextRequest) {
       authorityPublicKey
     ) as unknown as DriftUserAccountInfo[];
 
-    // Write response to file for analysis
-    const fs = require('fs');
-    const path = require('path');
-    const filePath = path.join(process.cwd(), 'user-accounts-response.json');
-    fs.writeFileSync(filePath, JSON.stringify(userAccounts, null, 2));
-
     if (!userAccounts || !Array.isArray(userAccounts)) {
       return NextResponse.json({
         error: 'Invalid response from Drift SDK',

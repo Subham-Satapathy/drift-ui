@@ -19,7 +19,7 @@ export default function Home() {
         
         <button
           onClick={() => setIsLookupOpen(!isLookupOpen)}
-          className={`px-4 py-2.5 rounded-lg text-sm text-white font-medium transition-all 
+          className={`px-4 py-2.5 rounded-lg text-sm text-black font-medium transition-all 
             ${isLookupOpen 
               ? 'bg-primary/10 text-primary border-black border' 
               : 'bg-primary text-black shadow-sm hover:border-primary/20 border'}`}
